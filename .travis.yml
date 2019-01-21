@@ -1,0 +1,11 @@
+language: java
+
+notifications:
+    slack:
+      on_success: always
+      on_failure: always
+    email:
+      recipients:
+          - pablo.pastormunoz@alum.uca.es
+      on_success: never
+      on_failure: always
