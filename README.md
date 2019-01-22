@@ -20,3 +20,5 @@ Para controlar la evolución del proyecto pueden consultarse los commits realiza
 
 ## Miembros del grupo
 * Pablo Pastor Muñoz
+
+https://travis-ci.org/pablopastormunoz/SistemaRecompensas.svg?branch=master
