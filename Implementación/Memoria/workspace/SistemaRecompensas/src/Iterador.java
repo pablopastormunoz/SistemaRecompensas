@@ -1,97 +1,108 @@
+import java.util.List;
+
+/*
+ * Interfaz Iterador que aplica sobre las 
+ * colecciones previamente modeladas.
+ */
 
 public interface Iterador {
 	public boolean tieneSiguiente();
 	public Object siguiente();
 }
 
-class Iterador_Jugador implements Iterador
-{
-	private int pos=0;
-	private Jugador[] ListaJugadores;
-	
-	public Iterador_Jugador (Jugador[] ListaJugadores) {
-		this.ListaJugadores = ListaJugadores;
-	}
-	
-	public boolean tieneSiguiente() {
-		if (pos >= ListaJugadores.length || ListaJugadores[pos] == null)
-			return false;
-		else 
-			return true;
-	}
-	
-	public Object siguiente() {
-		Jugador Jug = ListaJugadores[pos];
-		pos += 1;
-		return Jug;
-	}
-}
+/*
+ * Iteradores concretos que serán creados por
+ * las colecciones concretas cuando se requieran.
+ */
 
-class Iterador_Videojuego implements Iterador
+class Iterator_DLC implements Iterador
 {
-	private int pos=0;
-	private Videojuego[] ListaVideojuegos;
+	private Integer posicion = 0;
+	private List<DLC> ListaDLCs;
 	
-	public Iterador_Videojuego (Videojuego[] ListaVideojuegos) {
-		this.ListaVideojuegos = ListaVideojuegos;
-	}
-	
-	public boolean tieneSiguiente() {
-		if (pos >= ListaVideojuegos.length || ListaVideojuegos[pos] == null)
-			return false;
-		else 
-			return true;
-	}
-	
-	public Object siguiente() {
-		Videojuego VidJug = ListaVideojuegos[pos];
-		pos += 1;
-		return VidJug;
-	}
-}
-
-class Iterador_Recompensa implements Iterador
-{
-	private int pos=0;
-	private Recompensa[] ListaRecompensas;
-	
-	public Iterador_Recompensa (Recompensa[] ListaRecompensas) {
-		this.ListaRecompensas = ListaRecompensas;
-	}
-	
-	public boolean tieneSiguiente() {
-		if (pos >= ListaRecompensas.length || ListaRecompensas[pos] == null)
-			return false;
-		else 
-			return true;
-	}
-	
-	public Object siguiente() {
-		Recompensa Rec = ListaRecompensas[pos];
-		pos += 1;
-		return Rec;
-	}
-}
-
-class Iterador_DLC implements Iterador
-{
-	private int pos=0;
-	private DLC[] ListaDLCs;
-	
-	public Iterador_DLC (DLC[] ListaDLCs) {
+	public Iterator_DLC (List<DLC> ListaDLCs) {
 		this.ListaDLCs = ListaDLCs;
 	}
 	
 	public boolean tieneSiguiente() {
-		if (pos >= ListaDLCs.length || ListaDLCs[pos] == null)
+		if (posicion >= ListaDLCs.size() || ListaDLCs.get(posicion) == null)
 			return false;
 		else 
 			return true;
 	}
 	
 	public Object siguiente() {
-		DLC ContDes = ListaDLCs[pos];
-		pos += 1;
+		DLC ContDes = ListaDLCs.get(posicion);
+		posicion = posicion + 1;
 		return ContDes;
+	}
+}
+
+class Iterator_Videojuego implements Iterador
+{
+	private Integer posicion = 0;
+	private List<Videojuego> ListaVideojuegos;
+	
+	public Iterator_Videojuego (List<Videojuego> ListaVideojuegos) {
+		this.ListaVideojuegos = ListaVideojuegos;
+	}
+	
+	public boolean tieneSiguiente() {
+		if (posicion >= ListaVideojuegos.size() || ListaVideojuegos.get(posicion) == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	public Object siguiente() {
+		Videojuego VidJug = ListaVideojuegos.get(posicion);
+		posicion = posicion + 1;
+		return VidJug;
+	}
+}
+
+class Iterator_Jugador implements Iterador
+{
+	private Integer posicion = 0;
+	private List<Jugador> ListaJugadores;
+	
+	public Iterator_Jugador (List<Jugador> ListaJugadores) {
+		this.ListaJugadores = ListaJugadores;
+	}
+	
+	public boolean tieneSiguiente() {
+		if (posicion >= ListaJugadores.size() || ListaJugadores.get(posicion) == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	public Object siguiente() {
+		Jugador Jug = ListaJugadores.get(posicion);
+		posicion = posicion + 1;
+		return Jug;
+	}
+}
+
+class Iterator_Recompensa implements Iterador
+{
+	private Integer posicion = 0;
+	private List<Recompensa> ListaRecompensas;
+	
+	public Iterator_Recompensa (List<Recompensa> ListaRecompensas) {
+		this.ListaRecompensas = ListaRecompensas;
+	}
+	
+	public boolean tieneSiguiente() {
+		if (posicion >= ListaRecompensas.size() || ListaRecompensas.get(posicion) == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	public Object siguiente() {
+		Recompensa Rec = ListaRecompensas.get(posicion);
+		posicion = posicion + 1;
+		return Rec;
 	}
 }

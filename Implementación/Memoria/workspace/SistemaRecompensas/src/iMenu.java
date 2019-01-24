@@ -1,981 +1,317 @@
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
-public interface iMenu {
-	public void display();
+/*
+ * Interfaz iMenu para la arquitectura en árbol 
+ * que distingue al Composite.
+ */
+
+public interface iMenu 
+{
+	public void mostrar();
 }
 
-class MenuPrincipal implements iMenu {
+/*
+ * Clase que representa al menú compuesto de más objetos iMenu (sus opciones)
+ * dentro de la arquitectura en árbol del Composite.
+ */
 
-	private List<iMenu> Childs;
+class MenuCompuesto implements iMenu {
+
+	private List<iMenu> Opciones = new ArrayList<iMenu>();
 	
-	public MenuPrincipal() {}
+	private Coleccion_DLC DLCs;
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Jugador Jugs;
+	private Coleccion_Recompensa Recs;
+	private Jugador_Videojuego Jug_VidJug;
+	private Jugador_Recompensa Jug_Rec;
+
+	public MenuCompuesto() {}
 	
-	public MenuPrincipal(Coleccion_Jugador coleccion_Jugador, Coleccion_Videojuego coleccion_Videojuego,
-			Coleccion_Recompensa coleccion_Recompensa, Coleccion_DLC coleccion_DLC,
-			Jugador_Recompensa jugador_Recompensa, Jugador_Videojuego jugador_Videojuego) 
+	public MenuCompuesto(Coleccion_DLC DLCs, Coleccion_Videojuego VidJugs, Coleccion_Jugador Jugs,
+			Coleccion_Recompensa Recs, Jugador_Videojuego Jug_VidJug, Jugador_Recompensa Jug_Rec) 
 	{
+		this.DLCs = DLCs;
+		this.VidJugs = VidJugs;
+		this.Jugs = Jugs;
+		this.Recs = Recs;
+		this.Jug_VidJug = Jug_VidJug;
+		this.Jug_Rec = Jug_Rec;
+		
+		Factoria Creador = new Factoria_MenuCrear();
+		AñadirOpcion(Creador.Fabrica(this, this.DLCs, this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec));
+		Creador = new Factoria_MenuMostrar();
+		AñadirOpcion(Creador.Fabrica(this, this.DLCs, this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec));
+		Creador = new Factoria_MenuActualizar();
+		AñadirOpcion(Creador.Fabrica(this, this.DLCs, this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec));
+		Creador = new Factoria_MenuEliminar();
+		AñadirOpcion(Creador.Fabrica(this, this.DLCs, this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec));
+		Creador = new Factoria_MenuNotificar();
+		AñadirOpcion(Creador.Fabrica(this, this.DLCs, this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec));
+		Creador = new Factoria_MenuEstadisticas();
+		AñadirOpcion(Creador.Fabrica(this, this.DLCs, this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec));
 	}
 
-	public void AddChild(iMenu Child) {
-		Childs.add(Child);
+	public void AñadirOpcion(iMenu opcion) {
+		Opciones.add(opcion);
 	}
 	
-	public void RemoveChild(iMenu Child) {
-		Childs.remove(Child);
+	public void QuitarOpcion(iMenu opcion) {
+		Opciones.remove(opcion);
 	}
 	
-	public iMenu GetChild(Integer index) {
-		return Childs.get(index);
+	public iMenu GetOpcion(Integer posicion) {
+		return Opciones.get(posicion);
 	}
 	
-	public void display() {
-		String opt;
-		System.out.print("-------------------");
-		System.out.print("  Menú principal");
-		System.out.println("-------------------");
-		System.out.println("Acciones disponibles:");
-		System.out.print("1. CR jugador");
-		System.out.print("2. CRUD videojuego");
-		System.out.print("3. CRUD recompensa");
-		System.out.print("4. CR DLC");
-		System.out.print("5. Notificar nuevo jugador de un videojuego");
-		System.out.print("6. Notificar obtención de recompensa de un videojuego");
-		System.out.println("7. Mostrar estadísticas");
-		System.out.println("S. Guardar cambios");
-		System.out.println("Q. Salir");
-		System.out.print("Introduzca una opción: ");
+	public void mostrar() {
+		Integer opt;
+		
+		System.out.println("---------------------------------");
+		System.out.println("  Sistema de Recompensas 18/19   ");
+		System.out.println("---------------------------------\n");
+		System.out.println("Seleccione qué desea hacer:\n");
+		System.out.println("0. Crear un objeto.");
+		System.out.println("1. Mostrar datos de un objeto.");
+		System.out.println("2. Actualizar un objeto.");
+		System.out.println("3. Eliminar un objeto.");
+		System.out.println("4. Realizar una notificación.");
+		System.out.println("5. Mostrar una estadística.\n");
+
+		System.out.println("6. Cerrar el programa.\n");
+
 		@SuppressWarnings("resource")
 		Scanner S = new Scanner(System.in);
+		
 		do {
 			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt != "1" && opt != "2" && opt !="3" && opt !="4" && opt != "5" && opt!= "6" && opt != "7" && opt !="S" && opt != "Q");
+			opt = S.nextInt();
+		} while (opt != 0 && opt != 1 && opt != 2 && opt != 3 && opt != 4 && opt!= 5 && opt != 6);
 		
 		switch(opt) 
 		{
-			case "1":
-				Childs.get(1).display();
+			case 0:
+				Opciones.get(0).mostrar();
 				break;
-			case "2":
-				Childs.get(2).display();
+			case 1:
+				Opciones.get(1).mostrar();
 				break;			
-			case "3":
-				Childs.get(3).display();
+			case 2:
+				Opciones.get(2).mostrar();
 				break;		
-			case "4":
-				Childs.get(4).display();
+			case 3:
+				Opciones.get(3).mostrar();
 				break;		
-			case "5":
-				Childs.get(5).display();
+			case 4:
+				Opciones.get(4).mostrar();
 				break;		
-			case "6":
-				Childs.get(6).display();
-				break;		
-			case "7":
-				Childs.get(7).display();
-				break;		
-			case "S":
-				System.out.println("Todo está almacenado en memoria");
-				display();
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_CR_Jugador implements iMenu {
-
-	private List<iMenu> Childs;
-	
-	public Menu_CR_Jugador(iMenu parent) {}
-	
-	public void AddChild(iMenu Child) {
-		Childs.add(Child);
-	}
-	
-	public void RemoveChild(iMenu Child) {
-		Childs.remove(Child);
-	}
-	
-	public iMenu GetChild(Integer index) {
-		return Childs.get(index);
-	}
-	
-	public void display() {
-		String opt;
-		System.out.print("-------------------");
-		System.out.print("  CR jugador");
-		System.out.println("-------------------");
-		System.out.println("Acciones disponibles:");
-		System.out.print("1. Añadir nuevo jugador");
-		System.out.print("2. Consultar datos de un jugador");
-		System.out.println("S. Guardar cambios");
-		System.out.println("Q. Salir");
-		System.out.print("Introduzca una opción: ");
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		do {
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt != "1" && opt != "2" && opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "1":
-				Childs.get(1).display();
-				break;
-			case "2":
-				Childs.get(2).display();
+			case 5:
+				Opciones.get(5).mostrar();
 				break;			
-			case "S":
-				System.out.println("Todo está almacenado en memoria");
-				display();
-				break;
-			case "Q":
+			case 6:
+				System.out.println("\nHasta luego.");
 				System.exit(0);
 				break;		
 		}
 	}
 }
 
-class Menu_C_Jugador implements iMenu {
+/*
+ * Conjunto de clases que representan a los menús hoja del Composite.
+ * En total, seis menús hoja, uno para cada acción concreta.
+ */
+
+class MenuCrear implements iMenu 
+{
+	private Coleccion_DLC DLCs;
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Jugador Jugs;
+	private Coleccion_Recompensa Recs;
 	
-	private Coleccion_Jugador Coleccion;
-	private Command CreaJugador;
-	
-	public Menu_C_Jugador(Coleccion_Jugador C, iMenu Parent) {
-		Coleccion = C;
-		CreaJugador = new C_Jugador_Command(Coleccion);
-	}
-	
-	public void display() 
+	private iMenu Padre;
+	private Command Comando_Crear;
+
+	public MenuCrear(iMenu Padre, Coleccion_DLC DLCs, Coleccion_Videojuego VidJugs, Coleccion_Jugador Jugs,
+			Coleccion_Recompensa Recs) 
 	{
-		System.out.print("-------------------");
-		System.out.print("  Añadir nuevo jugador");
-		System.out.println("-------------------");
-
-		CreaJugador.execute();
-		}
-}
-
-class Menu_R_Jugador implements iMenu {
-	
-	private Coleccion_Jugador Coleccion;
-	private iMenu Parent;
-	private Command MuestraJugador;
-	
-	public Menu_R_Jugador(Coleccion_Jugador C, iMenu Parent) {
-		Coleccion = C;
-		MuestraJugador = new R_Jugador_Command(Coleccion);
-		this.Parent = Parent;
+		this.DLCs = DLCs;
+		this.VidJugs = VidJugs;
+		this.Jugs = Jugs;
+		this.Recs = Recs;
+		
+		this.Padre = Padre;
+		Comando_Crear = new Comando_Crear(this.DLCs, this.VidJugs, this.Jugs, this.Recs);
 	}
-	
-	public void display() 
+
+	public void mostrar() 
 	{
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Consultar datos de jugador ");
-		System.out.println("-------------------");
-
-		MuestraJugador.execute();
+		System.out.println("\n---------------------------------");
+		System.out.println("   Menú de creación de objetos   ");
+		System.out.println("---------------------------------\n");
 		
-		System.out.println();
-		System.out.println("R. Volver");
-		
-		String opcion;
-		do {
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion != "R");
-		
-		switch(opcion) 
-		{
-			case "R":
-				Parent.display();
-				break;
-		}
+		Comando_Crear.execute();
+		Padre.mostrar();
 	}
 }
 
-class Menu_CRUD_Videojuego implements iMenu {
+class MenuMostrar implements iMenu 
+{
+	private Coleccion_DLC DLCs;
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Jugador Jugs;
+	private Coleccion_Recompensa Recs;
+	
+	private iMenu Padre;
+	private Command Comando_Mostrar;
 
-	private List<iMenu> Childs;
-	
-	public Menu_CRUD_Videojuego(iMenu parent) {}
-	
-	public void AddChild(iMenu Child) {
-		Childs.add(Child);
-	}
-	
-	public void RemoveChild(iMenu Child) {
-		Childs.remove(Child);
-	}
-	
-	public iMenu GetChild(Integer index) {
-		return Childs.get(index);
-	}
-	
-	public void display() {
-		String opt;
-		System.out.print("-------------------");
-		System.out.print("  CRUD videojuego");
-		System.out.println("-------------------");
-		System.out.println("Acciones disponibles:");
-		System.out.print("1. Añadir nuevo videojuego");
-		System.out.print("2. Editar datos de un videojuego");
-		System.out.print("3. Consultar datos de un videojuego");
-		System.out.print("4. Eliminar videojuego");
-		System.out.println("S. Guardar cambios");
-		System.out.println("Q. Salir");
-		System.out.print("Introduzca una opción: ");
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		do {
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt != "1" && opt != "2" && opt !="3" && opt !="4" && opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "1":
-				Childs.get(1).display();
-				break;
-			case "2":
-				Childs.get(2).display();
-				break;			
-			case "3":
-				Childs.get(3).display();
-				break;		
-			case "4":
-				Childs.get(4).display();
-				break;		
-			case "S":
-				System.out.println("Todo está almacenado en memoria");
-				display();
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_C_Videojuego implements iMenu {
-	
-	private Coleccion_Videojuego Coleccion;
-	private Command CreaVideojuego;
-	
-	public Menu_C_Videojuego(Coleccion_Videojuego C, iMenu parent) {
-		Coleccion = C;
-		CreaVideojuego = new C_Videojuego_Command(Coleccion);
-	}
-	
-	public void display() 
+	public MenuMostrar(iMenu Padre, Coleccion_DLC DLCs, Coleccion_Videojuego VidJugs, Coleccion_Jugador Jugs,
+			Coleccion_Recompensa Recs) 
 	{
-		System.out.print("-------------------");
-		System.out.print("  Añadir nuevo videojuego");
-		System.out.println("-------------------");
-
-		CreaVideojuego.execute();
-		}
-}
-
-class Menu_R_Videojuego implements iMenu {
-	
-	private Coleccion_Videojuego Coleccion;
-	private iMenu Parent;
-	private Command MuestraVideojuego;
-	
-	public Menu_R_Videojuego(Coleccion_Videojuego C, iMenu parent2) {
-		Coleccion = C;
-		MuestraVideojuego = new R_Videojuego_Command(Coleccion);
+		this.DLCs = DLCs;
+		this.VidJugs = VidJugs;
+		this.Jugs = Jugs;
+		this.Recs = Recs;
+		
+		this.Padre = Padre;
+		Comando_Mostrar = new Comando_Mostrar(this.DLCs, this.VidJugs, this.Jugs, this.Recs);
 	}
-	
-	public void display() 
+
+	public void mostrar() 
 	{
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Consultar datos de videojuego ");
-		System.out.println("-------------------");
-
-		MuestraVideojuego.execute();
+		System.out.println("\n---------------------------------");
+		System.out.println("   Menú de mostrado de objetos   ");
+		System.out.println("---------------------------------\n");
 		
-		System.out.println();
-		System.out.println("R. Volver");
-		
-		String opcion;
-		do {
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion != "R");
-		
-		switch(opcion) 
-		{
-			case "R":
-				Parent.display();
-				break;
-		}
+		Comando_Mostrar.execute();
+		Padre.mostrar();
 	}
 }
 
-class Menu_U_Videojuego implements iMenu {
+
+class MenuActualizar implements iMenu 
+{
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Recompensa Recs;
 	
-	private Coleccion_Videojuego Coleccion;
-	private Command ActualizaVideojuego;
-	
-	public Menu_U_Videojuego(Coleccion_Videojuego C, iMenu parent) {
-		Coleccion = C;
-		ActualizaVideojuego = new U_Videojuego_Command(Coleccion);
-	}
-	
-	public void display() 
+	private iMenu Padre;
+	private Command Comando_Actualizar;
+
+	public MenuActualizar(iMenu Padre, Coleccion_Videojuego VidJugs, Coleccion_Recompensa Recs) 
 	{
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Editar datos de videojuego ");
-		System.out.println("-------------------");
-
-		ActualizaVideojuego.execute();
+		this.VidJugs = VidJugs;
+		this.Recs = Recs;
 		
-		System.out.println();
-		System.out.println("Acciones disponibles: ");
-		
-		String opt;
-		do {
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "S":
-				System.out.println("Cambios almacenados");
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
+		this.Padre = Padre;
+		Comando_Actualizar = new Comando_Actualizar(this.VidJugs, this.Recs);
 	}
-}
 
-class Menu_D_Videojuego implements iMenu {
-	private iMenu Parent;
-	private Coleccion_Videojuego Coleccion;
-	private Command BorraVideojuego;
-	
-	public Menu_D_Videojuego(Coleccion_Videojuego C, iMenu parent2) {
-		Coleccion = C;
-		BorraVideojuego = new D_Videojuego_Command(Coleccion);
-	}
-	
-	public void display() 
+	public void mostrar() 
 	{
-		System.out.print("-------------------");
-		System.out.print("  Eliminar videojuego ");
-		System.out.println("-------------------");
-
-		BorraVideojuego.execute();
+		System.out.println("\n---------------------------------");
+		System.out.println("  Menú de actualizado de objetos  ");
+		System.out.println("---------------------------------\n");
 		
-		Parent.display();
-	
+		Comando_Actualizar.execute();
+		Padre.mostrar();
 	}
 }
 
-class Menu_CRUD_Recompensa implements iMenu {
+class MenuEliminar implements iMenu 
+{
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Recompensa Recs;
+	private Coleccion_DLC DLCs;
+	
+	private iMenu Padre;
+	private Command Comando_Eliminar;
 
-	private List<iMenu> Childs;
-	
-	public Menu_CRUD_Recompensa(iMenu parent) {}
-	
-	public void AddChild(iMenu Child) {
-		Childs.add(Child);
-	}
-	
-	public void RemoveChild(iMenu Child) {
-		Childs.remove(Child);
-	}
-	
-	public iMenu GetChild(Integer index) {
-		return Childs.get(index);
-	}
-	
-	public void display() {
-		String opt;
-		System.out.print("-------------------");
-		System.out.print("  CRUD recompensa");
-		System.out.println("-------------------");
-		System.out.println("Acciones disponibles:");
-		System.out.print("1. Añadir nueva recompensa");
-		System.out.print("2. Editar datos de una recompensa");
-		System.out.print("3. Consultar datos de una recompensa");
-		System.out.print("4. Eliminar recompensa");
-		System.out.println("S. Guardar cambios");
-		System.out.println("Q. Salir");
-		System.out.print("Introduzca una opción: ");
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		do {
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt != "1" && opt != "2" && opt !="3" && opt !="4" && opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "1":
-				Childs.get(1).display();
-				break;
-			case "2":
-				Childs.get(2).display();
-				break;			
-			case "3":
-				Childs.get(3).display();
-				break;		
-			case "4":
-				Childs.get(4).display();
-				break;		
-			case "S":
-				System.out.println("Todo está almacenado en memoria");
-				display();
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_C_Recompensa implements iMenu {
-	
-	private Coleccion_Recompensa ColeccionRec;
-	private Coleccion_Videojuego ColeccionVid;
-	private Command CreaRecompensa;
-	
-	public Menu_C_Recompensa(Coleccion_Recompensa C, iMenu parent) {
-		ColeccionRec = C;
-		CreaRecompensa = new C_Recompensa_Command(ColeccionRec,ColeccionVid);
-	}
-	
-	public void display() 
+	public MenuEliminar(iMenu Padre, Coleccion_Videojuego VidJugs, Coleccion_Recompensa Recs, Coleccion_DLC DLCs, Jugador_Videojuego Jug_VidJug, Jugador_Recompensa Jug_Rec) 
 	{
-		System.out.print("-------------------");
-		System.out.print("  Añadir nueva recompensa");
-		System.out.println("-------------------");
-
-		CreaRecompensa.execute();
-		}
-}
-
-
-class Menu_R_Recompensa implements iMenu {
-	
-	private Coleccion_Recompensa Coleccion;
-	private iMenu Parent;
-	private Command MuestraRecompensa;
-	
-	public Menu_R_Recompensa(Coleccion_Recompensa C, iMenu parent2) {
-		Coleccion = C;
-		MuestraRecompensa = new R_Recompensa_Command(Coleccion);
+		this.VidJugs = VidJugs;
+		this.Recs = Recs;
+		this.DLCs = DLCs;
+		
+		this.Padre = Padre;
+		Comando_Eliminar = new Comando_Eliminar(this.VidJugs, this.Recs, this.DLCs);
 	}
-	
-	public void display() 
+
+	public void mostrar() 
 	{
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Consultar datos de recompensa ");
-		System.out.println("-------------------");
-
-		MuestraRecompensa.execute();
+		System.out.println("\n---------------------------------");
+		System.out.println(" Menú de eliminación de objetos   ");
+		System.out.println("---------------------------------\n");
 		
-		System.out.println();
-		System.out.println("R. Volver");
-		
-		String opcion;
-		do {
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion != "R");
-		
-		switch(opcion) 
-		{
-			case "R":
-				Parent.display();
-				break;
-		}
+		Comando_Eliminar.execute();
+		Padre.mostrar();
 	}
 }
 
-class Menu_U_Recompensa implements iMenu {
+class MenuNotificar implements iMenu 
+{
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Jugador Jugs;
+	private Coleccion_Recompensa Recs;
+	private Jugador_Videojuego Jug_VidJug;
+	private Jugador_Recompensa Jug_Rec;
 	
-	private Coleccion_Recompensa Coleccion;
-	private Command ActualizaRecompensa;
-	
-	public Menu_U_Recompensa(Coleccion_Recompensa C, iMenu parent) {
-		Coleccion = C;
-		ActualizaRecompensa = new U_Recompensa_Command(Coleccion);
-	}
-	
-	public void display() 
+	private iMenu Padre;
+	private Command Comando_Notificar;
+
+	public MenuNotificar(iMenu Padre, Coleccion_Videojuego VidJugs, Coleccion_Recompensa Recs, Coleccion_Jugador Jugs, Jugador_Videojuego Jug_VidJug, Jugador_Recompensa Jug_Rec) 
 	{
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Editar datos de recompensa ");
-		System.out.println("-------------------");
-
-		ActualizaRecompensa.execute();
+		this.VidJugs = VidJugs;
+		this.Recs = Recs;
+		this.Jugs = Jugs;
+		this.Jug_VidJug = Jug_VidJug;
+		this.Jug_Rec = Jug_Rec;
 		
-		System.out.println();
-		System.out.println("Acciones disponibles: ");
-		
-		String opt;
-		do {
-			System.out.println("S. Guardar cambios");
-			System.out.println("Q. Salir");
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "S":
-				System.out.println("Cambios almacenados");
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
+		this.Padre = Padre;
+		Comando_Notificar = new Comando_Notificar(this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec);
 	}
-}
 
-class Menu_D_Recompensa implements iMenu {
-	private iMenu Parent;
-	private Coleccion_Recompensa Coleccion;
-	private Command BorraRecompensa;
-	
-	public Menu_D_Recompensa(Coleccion_Recompensa C, iMenu parent2) {
-		Coleccion = C;
-		BorraRecompensa = new D_Recompensa_Command(Coleccion);
-	}
-	
-	public void display() 
+	public void mostrar() 
 	{
-		System.out.print("-------------------");
-		System.out.print("  Eliminar recompensa ");
-		System.out.println("-------------------");
-
-		BorraRecompensa.execute();
+		System.out.println("\n---------------------------------");
+		System.out.println("     Menú de notificaciones    ");
+		System.out.println("---------------------------------\n");
 		
-		Parent.display();
-	
+		Comando_Notificar.execute();
+		Padre.mostrar();
 	}
 }
 
-class Menu_CR_DLC implements iMenu {
+class MenuEstadisticas implements iMenu 
+{
+	private Coleccion_Videojuego VidJugs;
+	private Coleccion_Jugador Jugs;
+	private Coleccion_Recompensa Recs;
+	private Jugador_Videojuego Jug_VidJug;
+	private Jugador_Recompensa Jug_Rec;
+	
+	private iMenu Padre;
+	private Command Comando_Estadisticas;
 
-	private List<iMenu> Childs;
-	
-	public Menu_CR_DLC(iMenu parent) {}
-	
-	public void AddChild(iMenu Child) {
-		Childs.add(Child);
-	}
-	
-	public void RemoveChild(iMenu Child) {
-		Childs.remove(Child);
-	}
-	
-	public iMenu GetChild(Integer index) {
-		return Childs.get(index);
-	}
-	
-	public void display() {
-		String opt;
-		System.out.print("-------------------");
-		System.out.print("  CR DLC");
-		System.out.println("-------------------");
-		System.out.println("Acciones disponibles:");
-		System.out.print("1. Añadir nuevo DLC");
-		System.out.print("2. Consultar datos de un DLC");
-		System.out.println("S. Guardar cambios");
-		System.out.println("Q. Salir");
-		System.out.print("Introduzca una opción: ");
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		do {
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt != "1" && opt != "2" && opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "1":
-				Childs.get(1).display();
-				break;
-			case "2":
-				Childs.get(2).display();
-				break;			
-			case "S":
-				System.out.println("Todo está almacenado en memoria");
-				display();
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_C_DLC implements iMenu {
-	
-	private Coleccion_DLC Coleccion;
-	private Coleccion_Videojuego Col2;
-	private Command CreaDLC;
-	
-	public Menu_C_DLC(Coleccion_DLC C, Coleccion_Videojuego ColV, iMenu parent) {
-		Coleccion = C;
-		Col2=ColV;
-		CreaDLC = new C_DLC_Command(Coleccion, Col2);
-	}
-	
-	public void display() 
+	public MenuEstadisticas(iMenu Padre, Coleccion_Videojuego VidJugs, Coleccion_Recompensa Recs, Coleccion_Jugador Jugs, Jugador_Videojuego Jug_VidJug, Jugador_Recompensa Jug_Rec) 
 	{
-		System.out.print("-------------------");
-		System.out.print("  Añadir nuevo DLC");
-		System.out.println("-------------------");
-
-		CreaDLC.execute();
-	}
-}
-
-class Menu_R_DLC implements iMenu {
-	
-	private Coleccion_DLC Coleccion;
-	private iMenu Parent;
-	private Command MuestraDLC;
-	
-	public Menu_R_DLC(Coleccion_DLC C, iMenu Parent) {
-		Coleccion = C;
-		MuestraDLC = new R_DLC_Command(Coleccion);
+		this.VidJugs = VidJugs;
+		this.Recs = Recs;
+		this.Jugs = Jugs;
+		this.Jug_VidJug = Jug_VidJug;
+		this.Jug_Rec = Jug_Rec;
+		
+		this.Padre = Padre;
+		Comando_Estadisticas = new Comando_Estadisticas(this.VidJugs, this.Jugs, this.Recs, this.Jug_VidJug, this.Jug_Rec);
 	}
 
-	public void display() 
+	public void mostrar() 
 	{
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Consultar datos de DLC ");
-		System.out.println("-------------------");
-
-		MuestraDLC.execute();
+		System.out.println("\n---------------------------------");
+		System.out.println("      Menú de estadísticas    ");
+		System.out.println("---------------------------------\n");
 		
-		System.out.println();
-		System.out.println("R. Volver");
-		
-		String opcion;
-		do {
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion != "R");
-		
-		switch(opcion) 
-		{
-			case "R":
-				Parent.display();
-				break;
-		}
+		Comando_Estadisticas.execute();
+		Padre.mostrar();
 	}
-}
-
-class Menu_NotificarJugador implements iMenu {
-	private Jugador_Videojuego Enlaces;
-	private Coleccion_Jugador ListaJugadores;
-	private Coleccion_Videojuego ListaVideojuegos;
-	
-	public Menu_NotificarJugador(iMenu parent) {
-		
-	}
-
-	public void display() {
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Notificar Jugador de Videojuego ");
-		System.out.println("-------------------");
-
-		System.out.println("Seleccione un jugador al que notificar");
-		Iterador_Jugador IterJug = new Iterador_Jugador(ListaJugadores.getListaJugadores());
-		
-		int pos = 0;
-		while(IterJug.tieneSiguiente()) {
-			System.out.println(pos+". "+ ((Jugador) IterJug.siguiente()).getNombre());
-		}
-		int opt = S.nextInt(), cont = 0;
-		Jugador Jug = null;
-		Iterador_Jugador IterJug2 = new Iterador_Jugador(ListaJugadores.getListaJugadores());
-		
-		while(cont != opt) {
-			Jug = (Jugador) IterJug2.siguiente();
-		}
-		
-		System.out.println("Seleccione un videojuego");
-		Iterador_Videojuego IterVidJug = new Iterador_Videojuego(ListaVideojuegos.getListaVideojuegos());
-		
-		int posi = 0;
-		while(IterVidJug.tieneSiguiente()) {
-			System.out.println(posi+". "+ ((Videojuego) IterVidJug.siguiente()).getTitulo());
-		}
-		
-		int opt2 = S.nextInt(), cont2 = 0;
-		Videojuego VidJug = null;
-		Iterador_Videojuego IterVidJug2 = new Iterador_Videojuego(ListaVideojuegos.getListaVideojuegos());
-		
-		while(cont2 != opt2) {
-			VidJug = (Videojuego) IterVidJug2.siguiente();
-		}
-		
-		String opcion;
-		do {
-			System.out.println("S. Guardar cambios");
-			System.out.println("Q. Salir");
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion !="S" && opcion != "Q");
-		
-		switch(opcion) 
-		{
-			case "S":
-				Enlaces.asociaJugadorVideojuego(Jug, VidJug);
-				System.out.println("Cambios almacenados");
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_NotificarRecompensa implements iMenu {
-	private Jugador_Recompensa Enlaces;
-	private Coleccion_Jugador ListaJugadores;
-	private Coleccion_Recompensa ListaRecompensas;
-	
-	public Menu_NotificarRecompensa(iMenu parent) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public void display() {
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Notificar Recompensa de Jugador en Videojuego ");
-		System.out.println("-------------------");
-
-		System.out.println("Seleccione un jugador al que notificar");
-		Iterador_Jugador IterJug = new Iterador_Jugador(ListaJugadores.getListaJugadores());
-		
-		int pos = 0;
-		while(IterJug.tieneSiguiente()) {
-			System.out.println(pos+". "+ ((Jugador) IterJug.siguiente()).getNombre());
-		}
-		int opt = S.nextInt(), cont = 0;
-		Jugador Jug = null;
-		Iterador_Jugador IterJug2 = new Iterador_Jugador(ListaJugadores.getListaJugadores());
-		
-		while(cont != opt) {
-			Jug = (Jugador) IterJug2.siguiente();
-		}
-		
-		System.out.println("Seleccione una recompensa");
-		Iterador_Recompensa IterRec = new Iterador_Recompensa(ListaRecompensas.getListaRecompensas());
-		
-		int posi = 0;
-		while(IterRec.tieneSiguiente()) {
-			System.out.println(posi+". "+ ((Recompensa) IterRec.siguiente()).getTitulo());
-		}
-		
-		int opt2 = S.nextInt(), cont2 = 0;
-		Recompensa Rec = null;
-		Iterador_Recompensa IterRec2 = new Iterador_Recompensa(ListaRecompensas.getListaRecompensas());
-		
-		while(cont2 != opt2) {
-			Rec = (Recompensa) IterRec2.siguiente();
-		}
-		
-		String opcion;
-		do {
-			System.out.println("S. Guardar cambios");
-			System.out.println("Q. Salir");
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion !="S" && opcion != "Q");
-		
-		switch(opcion) 
-		{
-			case "S":
-				Enlaces.asociaJugadorRecompensa(Jug, Rec);
-				System.out.println("Cambios almacenados");
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_Estadisticas implements iMenu {
-
-	private List<iMenu> Childs;
-	
-	public Menu_Estadisticas(iMenu parent) {}
-	
-	public void AddChild(iMenu Child) {
-		Childs.add(Child);
-	}
-	
-	public void RemoveChild(iMenu Child) {
-		Childs.remove(Child);
-	}
-	
-	public iMenu GetChild(Integer index) {
-		return Childs.get(index);
-	}
-	
-	public void display() {
-		String opt;
-		System.out.print("-------------------");
-		System.out.print("  Estadisticas ");
-		System.out.println("-------------------");
-		System.out.println("Acciones disponibles:");
-		System.out.print("1. Consultar jugadores por videojuego");
-		System.out.print("2. Consultar estadísticas de las recompensas por videojuego");
-		System.out.print("3. Consultar jugadores que han completado cada videojuego");
-		System.out.println("S. Guardar cambios");
-		System.out.println("Q. Salir");
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		do {
-			System.out.print("Introduzca una opción: ");
-			opt = S.nextLine();
-		} while (opt != "1" && opt != "2" && opt !="3" && opt !="S" && opt != "Q");
-		
-		switch(opt) 
-		{
-			case "1":
-				Childs.get(1).display();
-				break;
-			case "2":
-				Childs.get(2).display();
-				break;			
-			case "3":
-				Childs.get(3).display();
-				break;		
-			case "S":
-				System.out.println("Todo está almacenado en memoria");
-				display();
-				break;
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-class Menu_showJugadoresVideojuego implements iMenu {
-	private Jugador_Videojuego Enlaces;
-	private Coleccion_Videojuego ListaVideojuegos;
-	
-	public Menu_showJugadoresVideojuego(iMenu parent) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public void display() {
-		@SuppressWarnings("resource")
-		Scanner S = new Scanner(System.in);
-		System.out.print("-------------------");
-		System.out.print("  Consultar Jugadores por Videojuego ");
-		System.out.println("-------------------");
-		
-		System.out.println("Seleccione un videojuego");
-		Iterador_Videojuego IterVidJug = new Iterador_Videojuego(ListaVideojuegos.getListaVideojuegos());
-		
-		int posi = 0;
-		while(IterVidJug.tieneSiguiente()) {
-			System.out.println(posi+". "+ ((Videojuego) IterVidJug.siguiente()).getTitulo());
-		}
-		
-		int opt2 = S.nextInt(), cont2 = 0;
-		Videojuego VidJug = null;
-		Iterador_Videojuego IterVidJug2 = new Iterador_Videojuego(ListaVideojuegos.getListaVideojuegos());
-		
-		while(cont2 != opt2) {
-			VidJug = (Videojuego) IterVidJug2.siguiente();
-		}
-		
-		System.out.print("-------------------");
-		System.out.print("  Jugadores con Videojuego "+ VidJug.getTitulo());
-		System.out.println("-------------------");
-		
-		Map<Videojuego,List<Jugador>> Contenedor = Enlaces.getJugadores();
-		List<Jugador> Jugs;
-		if(Contenedor.containsKey(VidJug))
-		{
-			Jugs = Contenedor.get(VidJug);
-			for(int i =0; i < Jugs.size(); i++)
-				System.out.println(i+". "+Jugs.get(i).getNickname());
-		}
-		
-		String opcion;
-		do {
-			System.out.println("Q. Salir");
-			System.out.print("Introduzca una opción: ");
-			opcion = S.nextLine();
-		} while (opcion != "Q");
-		
-		switch(opcion) 
-		{
-			case "Q":
-				System.exit(0);
-				break;		
-		}
-	}
-}
-
-// Pendiente de diseñar
-
-class Menu_showRecompensasConseguidas implements iMenu {
-
-	public Menu_showRecompensasConseguidas(iMenu parent) {
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void display() {
-		// TODO Auto-generated method stub
-		
-	}
-
-}
-
-//Pendiente de diseñar
-
-class Menu_showJuegosCompletados implements iMenu {
-
-	public Menu_showJuegosCompletados(iMenu parent) {
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void display() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

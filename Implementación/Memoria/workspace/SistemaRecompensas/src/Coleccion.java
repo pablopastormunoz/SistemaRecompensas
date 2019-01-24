@@ -1,140 +1,130 @@
+import java.util.ArrayList;
+import java.util.List;
 
-public interface Coleccion {
+/*
+ * Interfaz Coleccion, que modela las colecciones necesarias
+ * sobre las que opera un Iterador.
+ */
+
+public interface Coleccion 
+{
+	public Integer TamColeccion();
 	public Iterador crearIterador();
 }
 
-class Coleccion_Jugador implements Coleccion {
+/*
+ * Colecciones concretas y sus métodos para los diferentes 
+ * tipos de datos que se han modelado.
+ */
 
-	private int MAX_ITEMS=50;
-	private int numItems=0;
-	private Jugador[] ListaJugadores;
-	
-	public Coleccion_Jugador() {
-		ListaJugadores = new Jugador[MAX_ITEMS];
+class Coleccion_DLC implements Coleccion {
+	private List<DLC> ListaDLCs = new ArrayList<DLC>();
+
+	public void AñadirItem(DLC ContDes) {
+		ListaDLCs.add(ContDes);	
+	}
+
+	public void QuitarItem(DLC ContDes) {
+		ListaDLCs.remove(ContDes);
 	}
 	
+	public Integer posicionDe(DLC ContDes) {
+		return ListaDLCs.indexOf(ContDes);
+	}
+
+	public DLC getItem(Integer posicion) {
+		return ListaDLCs.get(posicion);
+	}
+
+	public Integer TamColeccion() {
+		return ListaDLCs.size();
+	}
+
 	public Iterador crearIterador() {
-		return new Iterador_Jugador(ListaJugadores);
-	}
-	
-	public void addItem(Jugador Jug){
-		if(numItems >= MAX_ITEMS)
-			System.err.print("Colección de jugadores llena");
-		else
-		{
-			ListaJugadores[numItems] = Jug;
-			numItems += 1;
-		}
-	}
-	
-	public int length() {
-		return ListaJugadores.length;
-	}
-	
-	public Jugador[] getListaJugadores()
-	{
-		return ListaJugadores;
+		return new Iterator_DLC(ListaDLCs);
 	}
 }
 
 class Coleccion_Videojuego implements Coleccion {
+	private List<Videojuego> ListaVideojuegos = new ArrayList<Videojuego>();
 
-	private int MAX_ITEMS=50;
-	private int numItems=0;
-	private Videojuego[] ListaVideojuegos;
-	
-	public Coleccion_Videojuego() {
-		ListaVideojuegos = new Videojuego[MAX_ITEMS];
+	public void AñadirItem(Videojuego VidJug) {
+		ListaVideojuegos.add(VidJug);	
+	}
+
+	public void QuitarItem(Videojuego VidJug) {
+		ListaVideojuegos.remove(VidJug);
 	}
 	
+	public Integer posicionDe(Videojuego VidJug) {
+		return ListaVideojuegos.indexOf(VidJug);
+	}
+
+	public Videojuego getItem(Integer posicion) {
+		return ListaVideojuegos.get(posicion);
+	}
+
+	public Integer TamColeccion() {
+		return ListaVideojuegos.size();
+	}
+
 	public Iterador crearIterador() {
-		return new Iterador_Videojuego(ListaVideojuegos);
+		return new Iterator_Videojuego(ListaVideojuegos);
+	}
+}
+
+class Coleccion_Jugador implements Coleccion {
+	private List<Jugador> ListaJugadores = new ArrayList<Jugador>();
+
+	public void AñadirItem(Jugador Jug) {
+		ListaJugadores.add(Jug);	
+	}
+
+	public void QuitarItem(Jugador Jug) {
+		ListaJugadores.remove(Jug);
 	}
 	
-	public void addItem(Videojuego VidJug){
-		if(numItems >= MAX_ITEMS)
-			System.err.print("Colección de videojuegos llena");
-		else
-		{
-			ListaVideojuegos[numItems] = VidJug;
-			numItems += 1;
-		}
+	public Integer posicionDe(Jugador Jug) {
+		return ListaJugadores.indexOf(Jug);
 	}
-	
-	public int length() {
-		return ListaVideojuegos.length;
+
+	public Jugador getItem(Integer posicion) {
+		return ListaJugadores.get(posicion);
 	}
-	
-	public Videojuego[] getListaVideojuegos()
-	{
-		return ListaVideojuegos;
+
+	public Integer TamColeccion() {
+		return ListaJugadores.size();
+	}
+
+	public Iterador crearIterador() {
+		return new Iterator_Jugador(ListaJugadores);
 	}
 }
 
 class Coleccion_Recompensa implements Coleccion {
+	private List<Recompensa> ListaRecompensas = new ArrayList<Recompensa>();
 
-	private int MAX_ITEMS=50;
-	private int numItems=0;
-	private Recompensa[] ListaRecompensas;
-	
-	public Coleccion_Recompensa() {
-		ListaRecompensas = new Recompensa[MAX_ITEMS];
+	public void AñadirItem(Recompensa Rec) {
+		ListaRecompensas.add(Rec);	
+	}
+
+	public void QuitarItem(Recompensa Rec) {
+		ListaRecompensas.remove(Rec);
 	}
 	
+	public Integer posicionDe(Recompensa Rec) {
+		return ListaRecompensas.indexOf(Rec);
+	}
+
+	public Recompensa getItem(Integer posicion) {
+		return ListaRecompensas.get(posicion);
+	}
+
+	public Integer TamColeccion() {
+		return ListaRecompensas.size();
+	}
+
 	public Iterador crearIterador() {
-		return new Iterador_Recompensa(ListaRecompensas);
-	}
-	
-	public void addItem(Recompensa Rec){
-		if(numItems >= MAX_ITEMS)
-			System.err.print("Colección de recompensas llena");
-		else
-		{
-			ListaRecompensas[numItems] = Rec;
-			numItems += 1;
-		}
-	}
-	
-	public int length() {
-		return ListaRecompensas.length;
-	}
-	
-	public Recompensa[] getListaRecompensas()
-	{
-		return ListaRecompensas;
-	}
-}
-
-class Coleccion_DLC implements Coleccion {
-
-	private int MAX_ITEMS=50;
-	private int numItems=0;
-	private DLC[] ListaDLCs;
-	
-	public Coleccion_DLC() {
-		ListaDLCs = new DLC[MAX_ITEMS];
-	}
-	
-	public Iterador crearIterador() {
-		return new Iterador_DLC(ListaDLCs);
-	}
-	
-	public void addItem(DLC ContDes){
-		if(numItems >= MAX_ITEMS)
-			System.err.print("Colección de DLCs llena");
-		else
-		{
-			ListaDLCs[numItems] = ContDes;
-			numItems += 1;
-		}
-	}
-	
-	public int length() {
-		return ListaDLCs.length;
-	}
-	
-	public DLC[] getListaDLCs()
-	{
-		return ListaDLCs;
+		return new Iterator_Recompensa(ListaRecompensas);
 	}
 }
