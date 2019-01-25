@@ -3,31 +3,16 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="./Implementación/Memoria/workspace/SistemaRecompensas" default="build" name="SistemaRecompensas">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="SistemaRecompensas">
     <property environment="env"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
-    <path id="JUnit 5.libraryclasspath">
-        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.api_5.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.engine_5.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.migrationsupport_5.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.jupiter.params_5.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.commons_1.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.engine_1.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.launcher_1.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.runner_1.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.platform.suite.api_1.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit.vintage.engine_5.1.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.opentest4j_1.0.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.apiguardian_1.0.0.v20180327-1502.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
-        <pathelement location="../../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
-    </path>
     <path id="SistemaRecompensas.classpath">
-        <path refid="JUnit 5.libraryclasspath"/>
         <pathelement location="bin"/>
+        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="lib/junit-4.12.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -65,43 +50,11 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="Cliente">
-        <java classname="Cliente" failonerror="true" fork="yes">
-            <classpath refid="SistemaRecompensas.classpath"/>
-        </java>
-    </target>
     <target name="JUnitTestSuite">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
             <test name="JUnitTestSuite" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="SistemaRecompensas.classpath"/>
-        </junit>
-    </target>
-    <target name="SuiteTest4">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="SuiteTest4" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="SistemaRecompensas.classpath"/>
-        </junit>
-    </target>
-    <target name="SuiteTest7">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="SuiteTest7" todir="${junit.output.dir}"/>
-            <jvmarg line="-ea"/>
-            <classpath refid="SistemaRecompensas.classpath"/>
-        </junit>
-    </target>
-    <target name="SuiteTest8">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="SuiteTest8" todir="${junit.output.dir}"/>
             <jvmarg line="-ea"/>
             <classpath refid="SistemaRecompensas.classpath"/>
         </junit>
