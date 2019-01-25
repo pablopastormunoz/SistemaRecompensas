@@ -144,7 +144,12 @@ class Comando_Crear implements Command
 				
 				Dispositivo Disp = VectorDispositivos[selector];
 				
-				VidJugs.AñadirItem(new Videojuego(TitVidJug, DescVidJug, ListaGeneros, Disp));
+				try {
+					VidJugs.AñadirItem(new Videojuego(TitVidJug, DescVidJug, ListaGeneros, Disp));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				System.out.println("\nNuevo Videojuego creado.\n");
 				
 				break;		
@@ -165,7 +170,12 @@ class Comando_Crear implements Command
 				System.out.print("Introduce Fecha de Nacimiento: ");
 				Fecha = S.nextLine();
 	
-				Jugs.AñadirItem(new Jugador(Nom,Apell,Nick,Correo,Fecha));
+				try {
+					Jugs.AñadirItem(new Jugador(Nom,Apell,Nick,Correo,Fecha));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("\nNuevo Jugador creado.\n");
 				
 				break;		
@@ -216,9 +226,11 @@ class Comando_Crear implements Command
 						selector = S.nextInt();
 					} while (selector < 0 || selector >= posicion);
 					
+					try {
 					Recompensa NewRec = new Recompensa(TitRec,Dific);
 					Recs.AñadirItem(NewRec);
-					VidJugs.getItem(selector).asociaRecompensa(NewRec);
+					VidJugs.getItem(selector).asociaRecompensa(NewRec);	
+					}catch(Exception E) {}
 					System.out.println("\nNueva Recompensa creada.\n");
 				}
 				break;		
@@ -643,7 +655,7 @@ class Comando_Eliminar implements Command
 			break;
 		case 1:
 			if(Recs.TamColeccion()==0)
-				System.out.println("\nNo hay elementos para mostrar.\n");
+				System.out.println("\nNo hay elementos para eliminar.\n");
 			else
 			{
 				System.out.println("\nSeleccione una Recompensa para eliminar: \n");

@@ -18,7 +18,10 @@ class Recompensa
 	private String titRecompensa;
 	private Dificultad dificRecompensa;
 	
-	public Recompensa (String tit, Dificultad dific) {
+	public Recompensa (String tit, Dificultad dific) throws Exception {
+		if(tit.isEmpty() || dific == null)
+			throw new Exception("Ningun campo de la recompensa puede estar vacio");
+	
 		titRecompensa = tit;
 		dificRecompensa = dific;
 	}

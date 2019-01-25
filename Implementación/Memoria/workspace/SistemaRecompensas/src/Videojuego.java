@@ -30,8 +30,11 @@ public class Videojuego
 	private List<Recompensa> refsRecompensa = new ArrayList<Recompensa>();
 	private List<DLC> refsDLC = new ArrayList<DLC>();
 	
-	public Videojuego (String titJuego, String descJuego, List<Genero> GenJuego, Dispositivo dispJuego)
+	public Videojuego (String titJuego, String descJuego, List<Genero> GenJuego, Dispositivo dispJuego) throws Exception
 	{
+		if(titJuego.isEmpty() || descJuego.isEmpty() || GenJuego.size()==0 || dispJuego == null)
+			throw new Exception("Ningun campo del videojuego puede estar vacio");
+	
 		this.titJuego = titJuego;
 		this.descJuego = descJuego;
 		this.GenJuego = GenJuego;

@@ -11,8 +11,10 @@ class Jugador
 				   fechJugador;
 	
 	public Jugador(String nom, String apell, String nick, 
-					String correo, String fecha) 
+					String correo, String fecha) throws Exception 
 	{
+		if(nom.isEmpty() || apell.isEmpty() || nick.isEmpty() || correo.isEmpty() || fecha.isEmpty())
+			throw new Exception("Ningun campo del jugador puede estar vacio");
 		nomJugador = nom;
 		apellJugador = apell;
 		nickJugador = nick;

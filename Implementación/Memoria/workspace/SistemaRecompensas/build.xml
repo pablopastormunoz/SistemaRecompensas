@@ -5,6 +5,7 @@
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. --><project basedir="./Implementación/Memoria/workspace/SistemaRecompensas" default="build" name="SistemaRecompensas">
     <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
@@ -32,6 +33,7 @@
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
+                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -67,5 +69,49 @@
         <java classname="Cliente" failonerror="true" fork="yes">
             <classpath refid="SistemaRecompensas.classpath"/>
         </java>
+    </target>
+    <target name="JUnitTestSuite">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="JUnitTestSuite" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="SistemaRecompensas.classpath"/>
+        </junit>
+    </target>
+    <target name="SuiteTest4">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="SuiteTest4" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="SistemaRecompensas.classpath"/>
+        </junit>
+    </target>
+    <target name="SuiteTest7">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="SuiteTest7" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="SistemaRecompensas.classpath"/>
+        </junit>
+    </target>
+    <target name="SuiteTest8">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="SuiteTest8" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="SistemaRecompensas.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
     </target>
 </project>
